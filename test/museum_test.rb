@@ -115,14 +115,11 @@ class MuseumTest < MiniTest::Test
     @dmns.admit(@broke_bob)
     @dmns.admit(@patron_2)
     @dmns.admit(@patron_3)
+    @dmns.draw_lottery_winner(@gems_and_minerals)
 
     @dmns.expects(:pick_random_winner).returns(@broke_bob)
-
-    assert_equal "Bob", @dmns.draw_lottery_winner(@dead_sea_scrolls)
-
-    assert_nil @dmns.draw_lottery_winner(@gems_and_minerals)
+    expected = "Bob"
+    assert_equal expected, @dmns.draw_lottery_winner(@dead_sea_scrolls)
   end
-
-
 
 end
