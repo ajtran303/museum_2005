@@ -14,14 +14,8 @@ class MuseumTest < MiniTest::Test
     @imax = Exhibit.new({name: "IMAX",cost: 15})
 
     @patron_1 = Patron.new("Bob", 20)
-    @patron_1.add_interest("Dead Sea Scrolls")
-    @patron_1.add_interest("Gems and Minerals")
-
     @patron_2 = Patron.new("Sally", 20)
-    @patron_2.add_interest("IMAX")
-
     @patron_3 = Patron.new("Johnny", 5)
-    @patron_3.add_interest("Dead Sea Scrolls")
 	end
 
   def test_it_exists_with_attributes
@@ -44,6 +38,11 @@ class MuseumTest < MiniTest::Test
     @dmns.add_exhibit(@dead_sea_scrolls)
     @dmns.add_exhibit(@imax)
 
+    @patron_1.add_interest("Dead Sea Scrolls")
+    @patron_1.add_interest("Gems and Minerals")
+    @patron_2.add_interest("IMAX")
+    @patron_3.add_interest("Dead Sea Scrolls")
+
     assert_equal [@gems_and_minerals, @dead_sea_scrolls], @dmns.recommend_exhibits(@patron_1)
     assert_equal [@imax], @dmns.recommend_exhibits(@patron_2)
   end
@@ -56,6 +55,30 @@ class MuseumTest < MiniTest::Test
     @dmns.admit(@patron_3)
 
     assert_equal [@patron_1, @patron_2, @patron_3], @dmns.patrons
+  end
+
+  def test_it_can_group_patrons_by_exhibit_interest
+    @dmns.add_exhibit(@gems_and_minerals)
+    @dmns.add_exhibit(@dead_sea_scrolls)
+    @dmns.add_exhibit(@imax)
+
+    @patron_1.add_interest("Gems and Minerals")
+    @patron_1.add_interest("Dead Sea Scrolls")
+    @patron_2.add_interest("Dead Sea Scrolls")
+    @patron_3.add_interest("Dead Sea Scrolls")
+
+    @dmns.admit(@patron_1)
+    @dmns.admit(@patron_2)
+    @dmns.admit(@patron_3)
+
+    expected =
+    {
+      @gems_and_minerals => [@patron_1],
+      @dead_sea_scrolls => [@patron_1, @patron_2, @patron_3],
+      @imax => []
+    }
+
+    assert_equal expected, @dmns.patrons_by_exhibit_interest
   end
 
 end
