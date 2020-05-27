@@ -21,4 +21,18 @@ class Museum
     @patrons << patron
   end
 
+  def patrons_by_exhibit_interest
+    patrons_by_exhibit_interest = Hash.new
+    @exhibits.each do |exhibit|
+      patrons_by_exhibit_interest[exhibit] = []
+    end
+    @patrons.each do |patron_with_interest|
+      exhibits_of_interest = recommend_exhibits(patron_with_interest)
+      exhibits_of_interest.each do |exhibit_of_interest|
+        patrons_by_exhibit_interest[exhibit_of_interest] << patron_with_interest
+      end
+    end
+    patrons_by_exhibit_interest
+  end
+
 end
