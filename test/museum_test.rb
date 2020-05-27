@@ -139,4 +139,39 @@ class MuseumTest < MiniTest::Test
     assert_nil @dmns.draw_lottery_winner(@gems_and_minerals)
   end
 
+  def test_it_can_announce_a_winner
+    @dmns.add_exhibit(@gems_and_minerals)
+    @dmns.add_exhibit(@dead_sea_scrolls)
+    @dmns.add_exhibit(@imax)
+
+    @broke_bob.add_interest("Gems and Minerals")
+    @broke_bob.add_interest("Dead Sea Scrolls")
+    @patron_2.add_interest("Dead Sea Scrolls")
+    @patron_3.add_interest("Dead Sea Scrolls")
+
+    @dmns.admit(@broke_bob)
+    @dmns.admit(@patron_2)
+    @dmns.admit(@patron_3)
+
+    @dmns.stubs(:draw_lottery_winner).returns("Bob")
+
+    expected = "Bob has won the IMAX edhibit lottery"
+
+    assert_equal expected, @dmns.announce_lottery_winner(@imax)
+  end
+
+  # =>
+
+  # The above string should match exactly,
+  # you will need to stub the
+  # return of `draw_lottery_winner`
+  # as the above method should depend
+  # on the return value of `draw_lottery_winner`.
+
+  # pry(main)> dmns.announce_lottery_winner(gems_and_minerals)
+  # => "No winners for this lottery"
+
+  # If there are no contestants, there are no winners.
+
+
 end
