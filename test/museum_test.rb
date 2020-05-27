@@ -1,5 +1,6 @@
 require "minitest/autorun"
 require "minitest/pride"
+require "mocha/minitest"
 require "./lib/museum"
 require "./lib/patron"
 require "./lib/exhibit"
@@ -98,6 +99,28 @@ class MuseumTest < MiniTest::Test
     @dmns.admit(@patron_3)
 
     assert_equal [@broke_bob, @patron_3], @dmns.ticket_lottery_contestants(@dead_sea_scrolls)
+    assert_equal [], @dmns.ticket_lottery_contestants(@gems_and_minerals)
+  end
+
+  def test_it_can_draw_a_lottery_winner
+    @dmns.add_exhibit(@gems_and_minerals)
+    @dmns.add_exhibit(@dead_sea_scrolls)
+    @dmns.add_exhibit(@imax)
+
+    @broke_bob.add_interest("Gems and Minerals")
+    @broke_bob.add_interest("Dead Sea Scrolls")
+    @patron_2.add_interest("Dead Sea Scrolls")
+    @patron_3.add_interest("Dead Sea Scrolls")
+
+    @dmns.admit(@broke_bob)
+    @dmns.admit(@patron_2)
+    @dmns.admit(@patron_3)
+
+    @dmns.expects(:pick_random_winner).returns(@broke_bob)
+
+    assert_equal "Bob", @dmns.draw_lottery_winner(@dead_sea_scrolls)
+
+    assert_nil @dmns.draw_lottery_winner(@gems_and_minerals)
   end
 
 
