@@ -121,4 +121,24 @@ class MuseumTest < MiniTest::Test
     assert_equal expected, @dmns.draw_lottery_winner(@dead_sea_scrolls)
   end
 
+  def test_it_will_return_nil_if_no_contestants_are_eligible_in_the_lottery
+
+    @dmns.add_exhibit(@gems_and_minerals)
+    @dmns.add_exhibit(@dead_sea_scrolls)
+    @dmns.add_exhibit(@imax)
+
+    @broke_bob.add_interest("Gems and Minerals")
+    @broke_bob.add_interest("Dead Sea Scrolls")
+    @patron_2.add_interest("Dead Sea Scrolls")
+    @patron_3.add_interest("Dead Sea Scrolls")
+
+    @dmns.admit(@broke_bob)
+    @dmns.admit(@patron_2)
+    @dmns.admit(@patron_3)
+
+    expected = nil
+
+    assert_equal expected, @dmns.draw_lottery_winner(@gems_and_minerals)
+  end
+
 end

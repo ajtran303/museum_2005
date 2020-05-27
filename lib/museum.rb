@@ -42,5 +42,14 @@ class Museum
     end
   end
 
+  def pick_random_winner(candidates)
+    candidates.sample
+  end
+
+  def draw_lottery_winner(exhibit)
+    candidates = ticket_lottery_contestants(exhibit)
+    winner = pick_random_winner(candidates)
+    winner.name
+  end
 
 end
