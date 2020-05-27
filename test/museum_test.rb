@@ -17,7 +17,7 @@ class MuseumTest < MiniTest::Test
     @patron_2 = Patron.new("Sally", 20)
     @patron_3 = Patron.new("Johnny", 5)
 
-    @broke_bob = Patron.new("Bob", 20)
+    @broke_bob = Patron.new("Bob", 0)
 	end
 
   def test_it_exists_with_attributes
