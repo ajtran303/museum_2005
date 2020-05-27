@@ -10,4 +10,10 @@ class Museum
     @exhibits << exhibit
   end
 
+  def recommend_exhibits(patron)
+    @exhibits.filter do |exhibit|
+      patron.interests.include?(exhibit.name)
+    end
+  end
+
 end
