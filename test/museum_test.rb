@@ -136,9 +136,7 @@ class MuseumTest < MiniTest::Test
     @dmns.admit(@patron_2)
     @dmns.admit(@patron_3)
 
-    expected = nil
-
-    assert_equal expected, @dmns.draw_lottery_winner(@gems_and_minerals)
+    assert_nil @dmns.draw_lottery_winner(@gems_and_minerals)
   end
 
 end

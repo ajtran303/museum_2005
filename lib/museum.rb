@@ -49,7 +49,11 @@ class Museum
   def draw_lottery_winner(exhibit)
     candidates = ticket_lottery_contestants(exhibit)
     winner = pick_random_winner(candidates)
-    winner.name
+    if winner == nil
+      nil
+    else
+      winner.name
+    end
   end
 
 end
